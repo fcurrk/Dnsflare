@@ -32,6 +32,7 @@ npm run build
 
 2、注意网站需要添加如下反代设置
 
+```
 #添加请求头
 add_header 'Access-Control-Allow-Origin' '*';
 add_header 'Access-Control-Allow-Headers' '*';
@@ -47,3 +48,5 @@ location /client/v4
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header REMOTE-HOST $remote_addr;
 } 
+```
+
