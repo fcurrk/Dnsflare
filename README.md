@@ -24,7 +24,5 @@ Partner 无法直接添加 A 记录 (据说), 而且 Partner API 在开启 2FA �
 
 [自行编译部署](docs/build.md)
 
-下载[Releases](https://github.com/fcurrk/Dnsflare/releases)部署：下载源码上传Web，取消防跨站及开启反代具体方法见[自行编译部署](docs/build.md)部分内容
-
 ## License
 Open sourced under the MIT license.
