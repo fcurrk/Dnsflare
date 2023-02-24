@@ -5,7 +5,7 @@ import { useUserStore } from '@/store/user'
 axios.interceptors.response.use(value => value, err => Promise.resolve(err))
 
 const noAuthClient = axios.create({
-    baseURL: '/api',
+    baseURL: 'https://dns.beta.gs/client/v4',
     timeout: 15000,
 })
 
@@ -27,7 +27,7 @@ function useAxios() {
     }
 
     const AxiosClient = axios.create({
-        baseURL: '/api',
+        baseURL: 'https://dns.beta.gs/client/v4',
         timeout: 15000,
         headers: getUserHeaders(),
     })
