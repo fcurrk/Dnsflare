@@ -46,15 +46,13 @@
                 </el-button>
             </el-form-item>
         </el-form>
-	<el-divider>最新消息</el-divider>
-            <div class="clearfix">
-                <span>因Cloudflare已关闭Partner的域名DNS解析功能，原cdn.beta.gs已关闭，继续使用只能使用API Token，本站所有请求由本地浏览器产生, 服务端仅进行 CORS处理，如需使用请先至Cloudflare申请API Token。</span>
-		<span>申请地址：https://dash.cloudflare.com/profile/api-tokens</span>
-                <span>需如下三个权限：</span>
-		<span>Zone.DNS编辑权限 (用于写入 DNS 记录)</span>
-                <span>Zone.Zone读取权限 (用于读取域名列表)</span>
-                <span>Zone.SSL and Certificates编辑权限 (用于展示和修改 SSL 证书供应商)</span>
-            </div>
+	<el-divider><h3>站点通知</h3></el-divider>
+	<el-row class="login-notice">因Cloudflare已关闭Partner的域名DNS解析功能，原cdn.beta.gs已关闭，继续使用只能使用API Token，本站所有请求由本地浏览器产生, 服务端仅进行 CORS转发处理，不保存任何用户数据。如需使用请先至Cloudflare申请API Token。</el-row>
+	<el-row class="login-notice">申请地址：https://dash.cloudflare.com/profile/api-tokens</el-row>
+        <el-row class="login-notice">API需如下三个权限：</el-row>
+	<el-row class="login-notice">Zone.DNS编辑权限 (用于写入 DNS 记录)</el-row>
+        <el-row class="login-notice">Zone.Zone读取权限 (用于读取域名列表)</el-row>
+        <el-row class="login-notice">Zone.SSL and Certificates编辑权限 (用于展示和修改 SSL 证书供应商)</el-row>
     </el-card>
 </template>
 
@@ -149,5 +147,8 @@ function reset() {
         margin: auto;
         margin-top: 20px;
         max-width: 400px;
+    }
+    .login-notice {
+        margin-top:5px;margin-bottom:5px;
     }
 </style>
