@@ -235,7 +235,8 @@ async function createRecord() {
             if (!record.value) {
                 return
             }
-            return await putRecord(record.value, doc)
+            //return await putRecord(record.value, doc)
+            return await putRecord(props.zone,record.value, doc)
         } else {
             return await createDnsRecord(props.zone, doc)
         }

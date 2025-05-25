@@ -197,7 +197,9 @@ function refresh() {
 
 async function changeProxied(record: CloudflareDnsRecord, proxied: boolean) {
     isLoading.value = true
-    const res = await patchRecord(record, {
+    //增加zoneId.value
+    //const res = await patchRecord(record, {
+    const res = await patchRecord(zoneId.value,record, {
         proxied,
     })
 
@@ -229,7 +231,9 @@ function changeSize(pageSize: number) {
 }
 
 async function doDeleteRecord(record: CloudflareDnsRecord) {
-    const deleteError = await deleteRecord(record)
+    //添加zoneId.value
+    const deleteError = await deleteRecord(zoneId.value,record)
+    //const deleteError = await deleteRecord(record)
 
     if (deleteError) {
         ElMessage({
