@@ -18,7 +18,13 @@ export async function listZoneDnsRecord(
         method: 'get',
     })
 
-    return (objectToCamelCase(response.data) as any)
+    const data = objectToCamelCase(response.data) as APIResponse<CloudflareDnsRecord[]>
+
+    data.result?.forEach(record => {
+        record.zoneId = zoneId
+    })
+
+    return data
 }
 
 export function listZoneDnsRecordAll(zoneId: string): LoadPageFunc<CloudflareDnsRecord> {
@@ -32,15 +38,11 @@ export function listZoneDnsRecordAll(zoneId: string): LoadPageFunc<CloudflareDns
     }
 }
 
-//增加zoneId,单独传递
-//export async function deleteRecord(payload: CloudflareDnsRecord): Promise<string | undefined> {
-export async function deleteRecord(zoneId: string,payload: CloudflareDnsRecord): Promise<string | undefined> {
+export async function deleteRecord(payload: CloudflareDnsRecord): Promise<string | undefined> {
     const axios = useAxios()
     try {
-        //console.log(payload); // Debugging: Log the payload object
         await axios.request({
-            //url: `zones/${payload.zoneId}/dns_records/${payload.id}`,
-            url: `zones/${zoneId}/dns_records/${payload.id}`,
+            url: `zones/${payload.zoneId}/dns_records/${payload.id}`,
             method: 'delete',
         })
     }  catch (err) {
@@ -104,31 +106,27 @@ type EditDnsRecordRequest = {
     proxied?: boolean
 }
 
-//增加zoneId,单独传递
-//export async function patchRecord(record: CloudflareDnsRecord, editRequest: EditDnsRecordRequest) {
-export async function patchRecord(zoneId: string,record: CloudflareDnsRecord, editRequest: EditDnsRecordRequest) {
+
+export async function patchRecord(record: CloudflareDnsRecord, editRequest: EditDnsRecordRequest) {
     const axios = useAxios()
     try {
         await axios.request({
             method: 'patch',
             data: editRequest,
-            //url: `/zones/${record.zoneId}/dns_records/${record.id}`,
-            url: `/zones/${zoneId}/dns_records/${record.id}`,
+            url: `/zones/${record.zoneId}/dns_records/${record.id}`,
         })
     } catch (err) {
         return err.response.data.errors[0].message
     }
 }
 
-//export async function putRecord(record: CloudflareDnsRecord, editRequest: EditDnsRecordRequest) {
-export async function putRecord(zoneId: string,record: CloudflareDnsRecord, editRequest: EditDnsRecordRequest) {
+export async function putRecord(record: CloudflareDnsRecord, editRequest: EditDnsRecordRequest) {
     const axios = useAxios()
     try {
         await axios.request({
             method: 'put',
             data: editRequest,
-            //url: `/zones/${record.zoneId}/dns_records/${record.id}`,
-            url: `/zones/${zoneId}/dns_records/${record.id}`,
+            url: `/zones/${record.zoneId}/dns_records/${record.id}`,
         })
     } catch (err) {
         return err.response.data.errors[0].message

@@ -203,4 +203,11 @@ type CloudflareDnsRecord = {
         autoAdded: boolean
         [key: string]: string | boolean
     }
+    priority?: number
+    data:{
+        weight?: number
+        port?: number
+        target?: string
+        priority?: number
+    }
 }

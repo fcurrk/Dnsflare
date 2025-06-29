@@ -1,7 +1,5 @@
 # 部署到 Cloudflare
 
-请使用[5aaee9/Dnsflare](https://github.com/5aaee9/Dnsflare)源部署
-
 安装 wrangler cli:
 
 ```

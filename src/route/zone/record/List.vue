@@ -197,9 +197,7 @@ function refresh() {
 
 async function changeProxied(record: CloudflareDnsRecord, proxied: boolean) {
     isLoading.value = true
-    //增加zoneId.value
-    //const res = await patchRecord(record, {
-    const res = await patchRecord(zoneId.value,record, {
+    const res = await patchRecord(record, {
         proxied,
     })
 
@@ -231,9 +229,7 @@ function changeSize(pageSize: number) {
 }
 
 async function doDeleteRecord(record: CloudflareDnsRecord) {
-    //添加zoneId.value
-    const deleteError = await deleteRecord(zoneId.value,record)
-    //const deleteError = await deleteRecord(record)
+    const deleteError = await deleteRecord(record)
 
     if (deleteError) {
         ElMessage({
@@ -269,6 +265,12 @@ function editRecord(record: CloudflareDnsRecord) {
         ttl: record.ttl,
         proxied: record.proxied,
         autoTTL: record.ttl === 1,
+        priority: record?.priority,
+        data:{
+            port: record.data?.port,
+            weight: record.data?.weight,
+            target: record.data?.target,
+        },
     })
 
     getRecord.value.setRecord(record)

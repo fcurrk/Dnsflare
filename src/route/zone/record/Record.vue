@@ -26,6 +26,7 @@
                     <el-input v-model="model.name" />
                 </el-form-item>
                 <el-form-item
+                    v-if="!isSRV"
                     prop="content"
                 >
 
@@ -50,6 +51,45 @@
                         </span>
                     </template>
                     <el-input-number v-model="model.priority" />
+                </el-form-item>
+                <el-form-item
+                    v-if="isSRV"
+                    prop="weight"
+                >
+                    <template #label>
+                        <span>
+                            <FontAwesomeIcon
+                                icon="sort-numeric-up"
+                            /> 权重
+                        </span>
+                    </template>
+                    <el-input-number v-model="model.data.weight" />
+                </el-form-item>
+                <el-form-item
+                    v-if="isSRV"
+                    prop="port"
+                >
+                    <template #label>
+                        <span>
+                            <FontAwesomeIcon
+                                icon="sort-numeric-up"
+                            /> 端口
+                        </span>
+                    </template>
+                    <el-input-number v-model="model.data.port" />
+                </el-form-item>
+                <el-form-item
+                    v-if="isSRV"
+                    prop="target"
+                >
+                    <template #label>
+                        <span>
+                            <FontAwesomeIcon
+                                icon="font"
+                            /> 目标
+                        </span>
+                    </template>
+                    <el-input v-model="model.data.target" />
                 </el-form-item>
                 <el-form-item
                     prop="type"
@@ -155,6 +195,14 @@ type RecordModalType = {
     autoTTL?: boolean
     proxied: boolean
     priority?: number
+    data?: SRVRecordModalType
+}
+
+type SRVRecordModalType = {
+    weight: number
+    port: number
+    target: string
+    priority?: number
 }
 
 const DefaultModalValue: RecordModalType = {
@@ -165,6 +213,12 @@ const DefaultModalValue: RecordModalType = {
     autoTTL: true,
     proxied: false,
     priority: 0,
+    data: {
+        weight: 0,
+        port: 0,
+        target: '',
+        priority: 0
+    },
 }
 
 const isLoading = ref(false)
@@ -175,6 +229,10 @@ const model = ref(DefaultModalValue)
 
 const requirePriority = computed(() => {
     return model.value.type === 'MX' || model.value.type === 'SRV'
+})
+
+const isSRV = computed(() => {
+    return model.value.type === 'SRV'
 })
 
 const dnsTypes = computed(() => {
@@ -235,8 +293,7 @@ async function createRecord() {
             if (!record.value) {
                 return
             }
-            //return await putRecord(record.value, doc)
-            return await putRecord(props.zone,record.value, doc)
+            return await putRecord(record.value, doc)
         } else {
             return await createDnsRecord(props.zone, doc)
         }
@@ -252,6 +309,14 @@ async function createRecord() {
 
     if (requirePriority.value) {
         requestBody.priority = model.value.priority
+    }
+    if (isSRV.value) {
+        requestBody.data = {
+            port: model.value.data.port,
+            weight: model.value.data.weight,
+            target: model.value.data.target,
+            priority: model.value.priority
+        }
     }
 
     const res = await submit(requestBody)
