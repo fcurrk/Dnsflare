@@ -1,0 +1,28 @@
+name: build-bun
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: '1.1.8'  # 使用稳定的 Bun 版本
+
+    - name: Install Dependencies
+      run: bun install
+
+    - name: Run Build
+      run: bun run build
+
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: dnsflare-dist 
+        path: dist/
+        retention-days: 7
