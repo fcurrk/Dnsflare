@@ -6,23 +6,34 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        shell: bash
+
     steps:
     - uses: actions/checkout@v4
 
-    - name: Setup Node.js
+    - name: Setup Node.js with pnpm
       uses: actions/setup-node@v4
       with:
         node-version: '22'
-        cache: 'npm'
+        cache: 'pnpm'
 
-    - name: Install Dependencies
-      run: npm ci
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: latest     # 或指定版本如 8.15.0
+        run_install: false  # 稍后手动安装依赖
+
+    - name: Install Dependencies with pnpm
+      run: pnpm install --frozen-lockfile
 
     - name: Run Build
-      run: npm run build
+      run: pnpm run build
 
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: dnsflare-package 
+        name: dnsflare-dist 
         path: dist/
+        retention-days: 7
