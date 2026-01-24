@@ -12,8 +12,8 @@
         </el-breadcrumb-item>
     </el-breadcrumb>
     <br>
-    <ZoneRecordList :zoneId="zoneId" />
-    <CertInfo :zoneId="zoneId" />
+    <ZoneRecordList :zone-id="zoneId" />
+    <CertInfo :zone-id="zoneId" />
 </template>
 
 <script lang="ts" setup>

@@ -6,27 +6,40 @@ function toHungarian(name: string): string {
     return name.replace(/[A-Z]/g, (letter: string) => `_${letter.toLowerCase()}`)
 }
 
-function objectNameTransform(input: any, objectNameRule: (string) => string): any {
-    const ret = {}
+type AnyRecord = Record<string, unknown>
 
+type CaseTransformRule = (value: string) => string
+
+type Convertible = AnyRecord | unknown[]
+
+type ConvertibleOrPrimitive = Convertible | string | number | boolean | null | undefined
+
+function isConvertible(value: unknown): value is Convertible {
+    return typeof value === 'object' && value !== null
+}
+
+function objectNameTransform(input: ConvertibleOrPrimitive, objectNameRule: CaseTransformRule): ConvertibleOrPrimitive {
     if (Array.isArray(input)) {
-        return input.map(it => objectNameTransform(it, objectNameRule))
+        return input.map(it => objectNameTransform(it as ConvertibleOrPrimitive, objectNameRule))
     }
 
-    if (typeof input !== 'object') {
+    if (!isConvertible(input)) {
         return input
     }
 
+    const ret: AnyRecord = {}
+
     Object.keys(input).forEach(it => {
-        if (typeof input[it] === 'object' && input[it] !== null) {
-            ret[objectNameRule(it)] = objectNameTransform(input[it], objectNameRule)
+        const value = (input as AnyRecord)[it]
+        if (isConvertible(value)) {
+            ret[objectNameRule(it)] = objectNameTransform(value, objectNameRule)
         } else {
-            ret[objectNameRule(it)] = input[it]
+            ret[objectNameRule(it)] = value
         }
     })
 
     return ret
 }
 
-export const objectToCamelCase = input => objectNameTransform(input, toCamelCase)
-export const objectToHungarian = input => objectNameTransform(input, toHungarian)
+export const objectToCamelCase = <T>(input: T): T => objectNameTransform(input as ConvertibleOrPrimitive, toCamelCase) as T
+export const objectToHungarian = <T>(input: T): T => objectNameTransform(input as ConvertibleOrPrimitive, toHungarian) as T

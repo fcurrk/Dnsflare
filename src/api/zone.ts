@@ -1,23 +1,41 @@
 import { useAxios } from '@/utils/requests'
 import { objectToCamelCase, objectToHungarian } from '@/utils/case'
 import { LoadPageResponse, convertPagination } from '@/utils/pagination'
-import { APIResponse, CloudflareZoneRecord, PageSettings } from '.'
+import { APIResponse, CloudflareErrorResponse, CloudflareZoneRecord, PageSettings } from '.'
+import type { AxiosError } from 'axios'
+
+const unknownErrorResponse: CloudflareErrorResponse = {
+    success: false,
+    errors: [{ code: 0, message: 'Unknown error' }],
+    messages: [],
+}
+
+function getErrorResponse(err: unknown): CloudflareErrorResponse {
+    const axiosError = err as AxiosError<CloudflareErrorResponse>
+    return axiosError.response?.data ?? unknownErrorResponse
+}
 
 export async function listUserZones(page?: PageSettings): Promise<APIResponse<CloudflareZoneRecord[]>> {
     const axios = useAxios()
     let url = '/zones'
 
-    const urlQuery = {
-        ...objectToHungarian(page)
-    }
-
-    url += `?${new URLSearchParams(urlQuery).toString()}`
-    const response = await axios.request<any>({
-        url,
-        method: 'get',
+    const urlQuery = objectToHungarian(page ?? {}) as Record<string, string | number>
+    const searchParams = new URLSearchParams()
+    Object.entries(urlQuery).forEach(([key, value]) => {
+        searchParams.set(key, String(value))
     })
 
-    return (objectToCamelCase(response.data) as any)
+    url += `?${searchParams.toString()}`
+    try {
+        const response = await axios.request<APIResponse<CloudflareZoneRecord[]>>({
+            url,
+            method: 'get',
+        })
+
+        return objectToCamelCase(response.data) as APIResponse<CloudflareZoneRecord[]>
+    } catch (err) {
+        return objectToCamelCase(getErrorResponse(err)) as APIResponse<CloudflareZoneRecord[]>
+    }
 }
 
 

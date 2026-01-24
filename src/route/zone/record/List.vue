@@ -8,7 +8,7 @@
         <template #header>
             <div class="card-header">
                 <span style="margin-top: auto; margin-bottom: auto;">DNS 列表</span>
-                <el-input @input="updateFilter" v-model="filterList" placeholder="输入过滤" />
+                <el-input v-model="filterList" placeholder="输入过滤" @input="updateFilter" />
                 <el-button
                     id="create-record-button"
                     text
@@ -51,11 +51,11 @@
             >
                 <template #default="scope">
                     <el-switch
-                        :modelValue="scope.row.proxied"
+                        :model-value="scope.row.proxied"
                         :disabled="!scope.row.proxiable"
                         active-color="#13ce66"
                         inactive-color="#ff4949"
-                        @update:modelValue="changeProxied(scope.row, !scope.row.proxied)"
+                        @update:model-value="changeProxied(scope.row, !scope.row.proxied)"
                     />
                 </template>
             </el-table-column>
@@ -117,6 +117,8 @@ import { listZoneDnsRecord, deleteRecord, patchRecord, listZoneDnsRecordAll } fr
 import RecordModal from './Record.vue'
 import { CloudflareDnsRecord, PageSettings } from '@/api'
 import { PaginationDetails, convertPagination, LoadPageResponse, fullLoadPages } from '@/utils/pagination'
+
+defineOptions({ name: 'ZoneRecordListPage' })
 const filterList = ref("")
 const isLoading = ref(true)
 
@@ -162,7 +164,7 @@ async function updateFilter() {
     }
 }
 
-async function rawLoadPage(page?: PageSettings): Promise<LoadPageResponse<any>> {
+async function rawLoadPage(page?: PageSettings): Promise<LoadPageResponse<CloudflareDnsRecord>> {
     const records = await listZoneDnsRecord(zoneId.value, page)
 
     if (records.result && records.resultInfo) {
@@ -197,7 +199,7 @@ function refresh() {
 
 async function changeProxied(record: CloudflareDnsRecord, proxied: boolean) {
     isLoading.value = true
-    const res = await patchRecord(record, {
+    const res = await patchRecord(zoneId.value, record.id, {
         proxied,
     })
 
@@ -280,7 +282,7 @@ function editRecord(record: CloudflareDnsRecord) {
 loadPage()
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
     #create-record-button {
         padding: 0;
         margin-left: auto;

@@ -14,7 +14,7 @@
             <template #header>
                 <div class="card-header">
                     <span>Zone 列表</span>
-                    <el-input @input="updateFilter" v-model="filterList" placeholder="输入过滤" />
+                    <el-input v-model="filterList" placeholder="输入过滤" @input="updateFilter" />
                 </div>
             </template>
             <el-table    
@@ -66,23 +66,14 @@
     </div>
 </template>
 
-<style scoped>
-    .card-header {
-        display: grid;
-        grid-template-columns: 1fr auto;
-    }
-
-    .card-header > span {
-        margin: auto 0;
-    }
-</style>
-
 <script lang="ts" setup>
 import { Ref, ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { listUserZones, listUserZonesAll } from '../../api/zone'
 import { PaginationDetails, convertPagination, fullLoadPages } from '../../utils/pagination'
 import { CloudflareZoneRecord, PageSettings } from '@/api'
+
+defineOptions({ name: 'ZoneListPage' })
 
 const filterList: Ref<string> = ref("")
 const isLoading: Ref<boolean> = ref(true)
@@ -160,3 +151,14 @@ await loadPage({
     page: 0,
 })
 </script>
+
+<style scoped>
+    .card-header {
+        display: grid;
+        grid-template-columns: 1fr auto;
+    }
+
+    .card-header > span {
+        margin: auto 0;
+    }
+</style>

@@ -39,6 +39,8 @@ import { useUserStore } from '@/store/user'
 import { useRouter, useRoute } from 'vue-router'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
+defineOptions({ name: 'AppHeader' })
+
 const userStore = useUserStore()
 const router = useRouter()
 const route = useRoute()
@@ -61,32 +63,28 @@ function handleCommand(command: HeaderCommand) {
 }
 </script>
 
-<style lang="scss" scoped>
-    @mixin item {
-        margin: auto 0;
-        cursor: pointer;
-        transition: .3s;
-
-        text-decoration: none;
-
-        &:hover {
-            color: #77A2DC;
-        }
-    }
-
-
+<style scoped>
     .app-header {
         padding: 0px;
         line-height: 60px;
         display: flex;
+    }
 
-        p,a {
-            @include item;
-        }
+    .app-header p,
+    .app-header a {
+        margin: auto 0;
+        cursor: pointer;
+        transition: .3s;
+        text-decoration: none;
+    }
 
-        .header-right {
-            margin-left: auto;
-            display: flex;
-        }
+    .app-header p:hover,
+    .app-header a:hover {
+        color: #77A2DC;
+    }
+
+    .app-header .header-right {
+        margin-left: auto;
+        display: flex;
     }
 </style>

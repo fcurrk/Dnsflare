@@ -1,20 +1,22 @@
 import { DnsRecordTypeEnum } from './enum'
 
 
-type ErrorEntity = {
+export type ErrorEntity = {
     code: number
     message: string
     errorChain?: ErrorEntity[]
 }
 
-type Message = {
+export type Message = {
     code: number
     message: string
-    type: any
+    type: 'error' | 'warning' | 'info'
 }
 
+export type CloudflareError = ErrorEntity
 
-type CloudflarePageInfo = {
+
+export type CloudflarePageInfo = {
     page: number
     perPage: number
     totalPages: number
@@ -22,7 +24,7 @@ type CloudflarePageInfo = {
     totalCount: number
 }
 
-type APIResponse<T> = {
+export type APIResponse<T> = {
     result: T | null
     success: boolean
     errors: ErrorEntity[]
@@ -30,7 +32,13 @@ type APIResponse<T> = {
     resultInfo?: CloudflarePageInfo
 }
 
-type CloudflareHostInfo = {
+export type CloudflareErrorResponse = {
+    success: false
+    errors: ErrorEntity[]
+    messages: Message[]
+}
+
+export type CloudflareHostInfo = {
     // Partner host name
     name: string
 
@@ -38,10 +46,10 @@ type CloudflareHostInfo = {
     website: string
 }
 
-type CloudflareLegacyId = 'free' | 'pro' | 'business' | 'enterprise'
-type CloudflarePriceFrequency = 'weekly' | 'monthly' | 'quarterly' | 'yearly' | 'read only'
+export type CloudflareLegacyId = 'free' | 'pro' | 'business' | 'enterprise'
+export type CloudflarePriceFrequency = 'weekly' | 'monthly' | 'quarterly' | 'yearly' | 'read only'
 
-type CloudflarePlan = {
+export type CloudflarePlan = {
     // Plan identifier tag
     id: string
 
@@ -76,9 +84,9 @@ type CloudflarePlan = {
     externallyManaged: boolean
 }
 
-type CloudflareZoneStatus = 'active' | 'pending' | 'initializing' | 'moved' | 'deleted' | 'deactivated'
+export type CloudflareZoneStatus = 'active' | 'pending' | 'initializing' | 'moved' | 'deleted' | 'deactivated'
 
-type CloudflareUserOwner = {
+export type CloudflareUserOwner = {
     // User identifier tag
     id: string
     // Your contact email address
@@ -87,7 +95,7 @@ type CloudflareUserOwner = {
     type: 'user'
 }
 
-type CloudflareOrganizationOwner = {
+export type CloudflareOrganizationOwner = {
     // Organization identifier tag
     id: string
     // Organization Name
@@ -96,10 +104,10 @@ type CloudflareOrganizationOwner = {
     type: 'organization'
 }
 
-type CloudflareZoneOwner = CloudflareUserOwner | CloudflareOrganizationOwner
+export type CloudflareZoneOwner = CloudflareUserOwner | CloudflareOrganizationOwner
 
 
-type CloudflareZoneRecord = {
+export type CloudflareZoneRecord = {
     // Zone identifier tag
     id: string
 
@@ -150,17 +158,17 @@ type CloudflareZoneRecord = {
     permissions: string[]
 }
 
-type PageSettings = {
+export type PageSettings = {
     perPage: number
     page: number
 }
 
-type DnsRecordType = 'A' | 'AAAA' | 'CNAME' | 'TXT' | 'SRV' | 'LOC' | 'MX'
+export type DnsRecordType = 'A' | 'AAAA' | 'CNAME' | 'TXT' | 'SRV' | 'LOC' | 'MX'
 | 'NS' | 'SPF' | 'CERT' | 'DNSKEY' | 'DS' | 'NAPTR' | 'SMIMEA' | 'SSHFP'
 | 'TLSA' | 'URI' | DnsRecordTypeEnum
 
 
-type CloudflareDnsRecord = {
+export type CloudflareDnsRecord = {
     // DNS record identifier tag
     id: string
 

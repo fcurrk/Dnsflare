@@ -5,9 +5,10 @@ import router from '@/router'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import ElementPlus from 'element-plus'
-import './styles/global.scss'
 import 'element-plus/dist/index.css'
 import 'normalize.css/normalize.css'
+import './style.css'
+import 'virtual:uno.css'
 
 const app = createApp(App)
 app.use(ElementPlus)
