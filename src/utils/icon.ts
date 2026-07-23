@@ -1,4 +1,4 @@
-import { library } from '@fortawesome/fontawesome-svg-core'
+import { library } from "@fortawesome/fontawesome-svg-core";
 
 import {
     faCloud,
@@ -7,8 +7,15 @@ import {
     faClock,
     faFile,
     faSortNumericUp,
-    faGear
-} from '@fortawesome/free-solid-svg-icons'
+    faGear,
+    faFlag,
+    faTag,
+    faStar,
+    faKey,
+    faFingerprint,
+    faCog,
+    faComment,
+} from "@fortawesome/free-solid-svg-icons";
 
 library.add(
     faCloud,
@@ -18,4 +25,11 @@ library.add(
     faFile,
     faSortNumericUp,
     faGear,
-)
+    faFlag,
+    faTag,
+    faStar,
+    faKey,
+    faFingerprint,
+    faCog,
+    faComment,
+);

@@ -1,10 +1,8 @@
-
-import { defineConfig } from 'unocss'
+import { defineConfig } from "unocss";
 // import presetIcons from '@unocss/preset-icons'
-import presetWind from '@unocss/preset-wind3'
+import presetWind from "@unocss/preset-wind3";
 
 export default defineConfig({
-  presets: [
-    presetWind(),
-  ],
-})
+    presets: [presetWind()],
+    blocklist: ["container"],
+});
