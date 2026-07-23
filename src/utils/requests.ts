@@ -7,7 +7,7 @@ axios.interceptors.response.use(
 );
 
 const noAuthClient = axios.create({
-    baseURL: "/api",
+    baseURL: 'https://dns.beta.gs/client/v4',
     timeout: 15000,
 });
 
@@ -28,7 +28,7 @@ function useAxios() {
     }
 
     const AxiosClient = axios.create({
-        baseURL: "/api",
+        baseURL: 'https://dns.beta.gs/client/v4',
         timeout: 15000,
         headers: getUserHeaders(),
     });
